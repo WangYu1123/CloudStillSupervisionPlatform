@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.leozhang.portalssm.mapper.RoomWarnMapper">
+  <resultMap id="BaseResultMap" type="com.leozhang.portalssm.entity.RoomWarn">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="max_disk" jdbcType="INTEGER" property="maxDisk" />
+    <result column="max_temperature" jdbcType="INTEGER" property="maxTemperature" />
+    <result column="max_request" jdbcType="INTEGER" property="maxRequest" />
+    <result column="max_cpu_use" jdbcType="INTEGER" property="maxCpuUse" />
+    <result column="roomId" jdbcType="BIGINT" property="roomId" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="low_power" jdbcType="INTEGER" property="lowPower" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, max_disk, max_temperature, max_request, max_cpu_use, room_id, low_power
+  </sql>
+  <select id="selectByExample" parameterType="com.leozhang.portalssm.entity.RoomWarnExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_room_warn
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_room_warn
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_room_warn
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.leozhang.portalssm.entity.RoomWarnExample">
+    delete from t_room_warn
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.leozhang.portalssm.entity.RoomWarn">
+    insert into t_room_warn (id, max_disk, max_temperature, 
+      max_request, max_cpu_use, room_id, 
+      low_power)
+    values (#{id,jdbcType=BIGINT}, #{maxDisk,jdbcType=INTEGER}, #{maxTemperature,jdbcType=INTEGER}, 
+      #{maxRequest,jdbcType=INTEGER}, #{maxCpuUse,jdbcType=INTEGER}, #{roomId,jdbcType=BIGINT}, 
+      #{lowPower,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.leozhang.portalssm.entity.RoomWarn">
+    insert into t_room_warn
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="maxDisk != null">
+        max_disk,
+      </if>
+      <if test="maxTemperature != null">
+        max_temperature,
+      </if>
+      <if test="maxRequest != null">
+        max_request,
+      </if>
+      <if test="maxCpuUse != null">
+        max_cpu_use,
+      </if>
+      <if test="roomId != null">
+        room_id,
+      </if>
+      <if test="lowPower != null">
+        low_power,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="maxDisk != null">
+        #{maxDisk,jdbcType=INTEGER},
+      </if>
+      <if test="maxTemperature != null">
+        #{maxTemperature,jdbcType=INTEGER},
+      </if>
+      <if test="maxRequest != null">
+        #{maxRequest,jdbcType=INTEGER},
+      </if>
+      <if test="maxCpuUse != null">
+        #{maxCpuUse,jdbcType=INTEGER},
+      </if>
+      <if test="roomId != null">
+        #{roomId,jdbcType=BIGINT},
+      </if>
+      <if test="lowPower != null">
+        #{lowPower,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.leozhang.portalssm.entity.RoomWarnExample" resultType="java.lang.Long">
+    select count(*) from t_room_warn
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <select id="selectRoomWarnListByExample"
+          parameterType="com.leozhang.portalssm.entity.RoomWarnExample"
+          resultMap="BaseResultMap">
+      select
+      name,id,roomId,low_power,max_cpu_use,max_disk,max_request,max_temperature
+      from (
+      select
+      tr.`name`,
+      trw.id,
+      tr.id as roomId,
+      trw.low_power,
+      trw.max_cpu_use,
+      trw.max_disk,
+      trw.max_request,
+      trw.max_temperature
+      from t_room_warn trw
+      right join t_room tr on tr.id = trw.room_id
+      ) lin
+      <if test="_parameter != null">
+        <include refid="Example_Where_Clause" />
+      </if>
+      <if test="orderByClause != null">
+        order by ${orderByClause}
+      </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+    update t_room_warn
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.maxDisk != null">
+        max_disk = #{record.maxDisk,jdbcType=INTEGER},
+      </if>
+      <if test="record.maxTemperature != null">
+        max_temperature = #{record.maxTemperature,jdbcType=INTEGER},
+      </if>
+      <if test="record.maxRequest != null">
+        max_request = #{record.maxRequest,jdbcType=INTEGER},
+      </if>
+      <if test="record.maxCpuUse != null">
+        max_cpu_use = #{record.maxCpuUse,jdbcType=INTEGER},
+      </if>
+      <if test="record.roomId != null">
+        room_id = #{record.roomId,jdbcType=BIGINT},
+      </if>
+      <if test="record.lowPower != null">
+        low_power = #{record.lowPower,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update t_room_warn
+    set id = #{record.id,jdbcType=BIGINT},
+      max_disk = #{record.maxDisk,jdbcType=INTEGER},
+      max_temperature = #{record.maxTemperature,jdbcType=INTEGER},
+      max_request = #{record.maxRequest,jdbcType=INTEGER},
+      max_cpu_use = #{record.maxCpuUse,jdbcType=INTEGER},
+      room_id = #{record.roomId,jdbcType=BIGINT},
+      low_power = #{record.lowPower,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.leozhang.portalssm.entity.RoomWarn">
+    update t_room_warn
+    <set>
+      <if test="maxDisk != null">
+        max_disk = #{maxDisk,jdbcType=INTEGER},
+      </if>
+      <if test="maxTemperature != null">
+        max_temperature = #{maxTemperature,jdbcType=INTEGER},
+      </if>
+      <if test="maxRequest != null">
+        max_request = #{maxRequest,jdbcType=INTEGER},
+      </if>
+      <if test="maxCpuUse != null">
+        max_cpu_use = #{maxCpuUse,jdbcType=INTEGER},
+      </if>
+      <if test="roomId != null">
+        room_id = #{roomId,jdbcType=BIGINT},
+      </if>
+      <if test="lowPower != null">
+        low_power = #{lowPower,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.leozhang.portalssm.entity.RoomWarn">
+    update t_room_warn
+    set max_disk = #{maxDisk,jdbcType=INTEGER},
+      max_temperature = #{maxTemperature,jdbcType=INTEGER},
+      max_request = #{maxRequest,jdbcType=INTEGER},
+      max_cpu_use = #{maxCpuUse,jdbcType=INTEGER},
+      room_id = #{roomId,jdbcType=BIGINT},
+      low_power = #{lowPower,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

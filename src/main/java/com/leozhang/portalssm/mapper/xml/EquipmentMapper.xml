@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.leozhang.portalssm.mapper.EquipmentMapper">
+<!--  <resultMap id="BaseResultMap" type="com.leozhang.portalssm.entity.Equipment">-->
+<!--    <id column="id" jdbcType="BIGINT" property="id" />-->
+<!--    <result column="name" jdbcType="VARCHAR" property="name" />-->
+<!--    <result column="brand_id" jdbcType="BIGINT" property="brandId" />-->
+<!--    <result column="equipment_no" jdbcType="VARCHAR" property="equipmentNo" />-->
+<!--    <result column="remark" jdbcType="VARCHAR" property="remark" />-->
+<!--    <result column="insert_time" jdbcType="TIMESTAMP" property="insertTime" />-->
+<!--    <result column="description" jdbcType="VARCHAR" property="description" />-->
+<!--    <result column="status_id" jdbcType="BIGINT" property="statusId" />-->
+<!--    <result column="img" jdbcType="VARCHAR" property="img" />-->
+<!--    <result column="room_id" jdbcType="BIGINT" property="roomId" />-->
+<!--    <result column="factory" jdbcType="VARCHAR" property="factory" />-->
+<!--  </resultMap>-->
+  <resultMap id="BaseResultMap" type="com.leozhang.portalssm.entity.Equipment">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="brand_id" jdbcType="BIGINT" property="brandId" />
+    <result column="brand_name" jdbcType="VARCHAR" property="brandName" />
+    <result column="equipment_no" jdbcType="VARCHAR" property="equipmentNo" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="insert_time" jdbcType="TIMESTAMP" property="insertTime" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="status_id" jdbcType="BIGINT" property="statusId" />
+    <result column="status_name" jdbcType="VARCHAR" property="statusName" />
+    <result column="img" jdbcType="VARCHAR" property="img" />
+    <result column="room_id" jdbcType="BIGINT" property="roomId" />
+    <result column="room_name" jdbcType="VARCHAR" property="roomName" />
+    <result column="factory" jdbcType="VARCHAR" property="factory" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, name, brand_id, equipment_no, remark, insert_time, description, status_id, img, 
+    room_id, factory
+  </sql>
+  <select id="selectAllByExample"
+          parameterType="com.leozhang.portalssm.entity.EquipmentExample"
+          resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    te.id,
+    te.`name`,
+    te.brand_id,
+    teb.brand_name,
+    te.description,
+    te.equipment_no,
+    te.factory,
+    te.img,
+    te.insert_time,
+    te.remark,
+    te.room_id,
+    tr.name as room_name,
+    te.status_id,
+    tes.status_name
+    from t_equipment te
+    left join t_equipment_brand teb on te.brand_id = teb.id
+    left join t_equipment_status tes on te.status_id = tes.id
+    left join t_room tr on tr.id = te.room_id
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="com.leozhang.portalssm.entity.EquipmentExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_equipment
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_equipment
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_equipment
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.leozhang.portalssm.entity.EquipmentExample">
+    delete from t_equipment
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.leozhang.portalssm.entity.Equipment">
+    insert into t_equipment (id, name, brand_id, 
+      equipment_no, remark, insert_time, 
+      description, status_id, img, 
+      room_id, factory)
+    values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{brandId,jdbcType=BIGINT}, 
+      #{equipmentNo,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{insertTime,jdbcType=TIMESTAMP}, 
+      #{description,jdbcType=VARCHAR}, #{statusId,jdbcType=BIGINT}, #{img,jdbcType=VARCHAR}, 
+      #{roomId,jdbcType=BIGINT}, #{factory,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.leozhang.portalssm.entity.Equipment">
+    insert into t_equipment
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="brandId != null">
+        brand_id,
+      </if>
+      <if test="equipmentNo != null">
+        equipment_no,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="insertTime != null">
+        insert_time,
+      </if>
+      <if test="description != null">
+        description,
+      </if>
+      <if test="statusId != null">
+        status_id,
+      </if>
+      <if test="img != null">
+        img,
+      </if>
+      <if test="roomId != null">
+        room_id,
+      </if>
+      <if test="factory != null">
+        factory,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="brandId != null">
+        #{brandId,jdbcType=BIGINT},
+      </if>
+      <if test="equipmentNo != null">
+        #{equipmentNo,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="insertTime != null">
+        #{insertTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="statusId != null">
+        #{statusId,jdbcType=BIGINT},
+      </if>
+      <if test="img != null">
+        #{img,jdbcType=VARCHAR},
+      </if>
+      <if test="roomId != null">
+        #{roomId,jdbcType=BIGINT},
+      </if>
+      <if test="factory != null">
+        #{factory,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.leozhang.portalssm.entity.EquipmentExample" resultType="java.lang.Long">
+    select count(*) from t_equipment
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update t_equipment
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.name != null">
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.brandId != null">
+        brand_id = #{record.brandId,jdbcType=BIGINT},
+      </if>
+      <if test="record.equipmentNo != null">
+        equipment_no = #{record.equipmentNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.remark != null">
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.insertTime != null">
+        insert_time = #{record.insertTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.description != null">
+        description = #{record.description,jdbcType=VARCHAR},
+      </if>
+      <if test="record.statusId != null">
+        status_id = #{record.statusId,jdbcType=BIGINT},
+      </if>
+      <if test="record.img != null">
+        img = #{record.img,jdbcType=VARCHAR},
+      </if>
+      <if test="record.roomId != null">
+        room_id = #{record.roomId,jdbcType=BIGINT},
+      </if>
+      <if test="record.factory != null">
+        factory = #{record.factory,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update t_equipment
+    set id = #{record.id,jdbcType=BIGINT},
+      name = #{record.name,jdbcType=VARCHAR},
+      brand_id = #{record.brandId,jdbcType=BIGINT},
+      equipment_no = #{record.equipmentNo,jdbcType=VARCHAR},
+      remark = #{record.remark,jdbcType=VARCHAR},
+      insert_time = #{record.insertTime,jdbcType=TIMESTAMP},
+      description = #{record.description,jdbcType=VARCHAR},
+      status_id = #{record.statusId,jdbcType=BIGINT},
+      img = #{record.img,jdbcType=VARCHAR},
+      room_id = #{record.roomId,jdbcType=BIGINT},
+      factory = #{record.factory,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.leozhang.portalssm.entity.Equipment">
+    update t_equipment
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="brandId != null">
+        brand_id = #{brandId,jdbcType=BIGINT},
+      </if>
+      <if test="equipmentNo != null">
+        equipment_no = #{equipmentNo,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="insertTime != null">
+        insert_time = #{insertTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="description != null">
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="statusId != null">
+        status_id = #{statusId,jdbcType=BIGINT},
+      </if>
+      <if test="img != null">
+        img = #{img,jdbcType=VARCHAR},
+      </if>
+      <if test="roomId != null">
+        room_id = #{roomId,jdbcType=BIGINT},
+      </if>
+      <if test="factory != null">
+        factory = #{factory,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.leozhang.portalssm.entity.Equipment">
+    update t_equipment
+    set name = #{name,jdbcType=VARCHAR},
+      brand_id = #{brandId,jdbcType=BIGINT},
+      equipment_no = #{equipmentNo,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      insert_time = #{insertTime,jdbcType=TIMESTAMP},
+      description = #{description,jdbcType=VARCHAR},
+      status_id = #{statusId,jdbcType=BIGINT},
+      img = #{img,jdbcType=VARCHAR},
+      room_id = #{roomId,jdbcType=BIGINT},
+      factory = #{factory,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
